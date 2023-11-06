@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class MyController {
 	@RequestMapping("/")
-	public @ResponseBody String root() throws Exception{
+	public String root() throws Exception{
 		return "mainhome";
 	}
 }

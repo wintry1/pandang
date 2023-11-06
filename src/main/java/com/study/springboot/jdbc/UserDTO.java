@@ -4,8 +4,15 @@ import lombok.Data;
 
 @Data
 public class UserDTO {
-	
-	private String ename1;
-	private int dno1;
-	private String dname1;
+	private int user_seq;
+	private String user_id;
+	private String user_name;
+	private String user_role;
+	private int user_warning_count;
+	private int user_criminal_count;
+	private String user_address;
+	private double user_latitude;
+	private double user_longitude;
+	private String user_sns;
+	private int user_grade;
 }
