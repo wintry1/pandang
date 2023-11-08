@@ -13,8 +13,8 @@
 	</select>
 	
 	<insert id="writeDao" parameterType="java.util.HashMap">
-		insert into product (product_seq, user_seq, prd_title, prd_ctnt, prd_at, prd_hit, prd_price, prd_latitude, prd_longitude, prd_address, prd_maptext, prd_use_yn)
-			values (product_seq.nextval, #{item1}, #{item2}, #{item3}, #{item4}, #{item5}, #{item6}, #{item7}, #{item8}, #{item9}, #{item10}, #{item11})
+		insert into product (product_seq, user_seq, prd_title, prd_ctnt, prd_at, prd_hit, prd_use, prd_price, prd_latitude, prd_longitude, prd_address, prd_maptext, prd_use_yn)
+			 values (product_seq.nextval, #{item1}, #{item2}, #{item3}, #{item4}, #{item5}, 0, 'E', #{item6}, #{item7}, #{item8}, #{item9}, 'Y')
 	</insert>
 	
 	<delete id="deleteDao">
