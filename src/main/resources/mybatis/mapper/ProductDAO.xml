@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.study.springboot.jdbc.ProductDAO">
+	<select id="listDao" resultType="com.study.springboot.dto.ProductDTO">
+		select * from product order by id desc
+	</select>
+	
+	<select id="viewDao" resultType="com.study.springboot.dto.ProductDTO">
+		select * from product where id = #{0}
+	</select>
+	
+	<insert id="writeDao" parameterType="java.util.HashMap">
+		insert into product (product_seq, user_seq, prd_title, prd_ctnt, prd_at, prd_hit, prd_price, prd_latitude, prd_longitude, prd_address, prd_maptext, prd_use_yn)
+			values (product_seq.nextval, #{item1}, #{item2}, #{item3}, #{item4}, #{item5}, #{item6}, #{item7}, #{item8}, #{item9}, #{item10}, #{item11})
+	</insert>
+	
+	<delete id="deleteDao">
+		delete from product where id = #{_id}
+	</delete>
+	
+	<select id="articleCount" resultType="_int">
+		select count(*) from product
+	</select>
+</mapper>
