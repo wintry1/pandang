@@ -3,7 +3,7 @@ package com.study.springboot.jdbc;
 import lombok.Data;
 
 @Data
-public class WarningDTO {
+public class WdminDTO {
 	private int warning_seq;
 	private int user_seq;
 	private String warning_release_date;
