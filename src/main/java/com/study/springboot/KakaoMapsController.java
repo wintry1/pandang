@@ -1,16 +1,66 @@
 package com.study.springboot;
 
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 public class KakaoMapsController {
 	
+	@RequestMapping("/ch")
+	public ResponseEntity<String> search(@RequestParam Double latitude, @RequestParam Double longitude, HttpServletRequest request) {
+	    String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?";
+	    String key = "0e5fcd82ed464324c0e57a10607243a6";
+	    
+	    RestTemplate restTemplate = new RestTemplate();
+	    
+	    HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Authorization", "KakaoAK " + key);
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
+        		.queryParam("x", longitude)
+        		.queryParam("y", latitude);
+   
+        String requestUrl = builder.build().toUriString();
+
+        ResponseEntity<String> response = restTemplate.exchange(requestUrl, HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
+
+        String responseBody = response.getBody();
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode jsonNode = objectMapper.readTree(responseBody);
+
+            JsonNode firstDocument = jsonNode.get("documents").get(0);
+
+            String addressName = firstDocument.has("road_address") ?
+                firstDocument.get("road_address").get("address_name").asText() :
+                firstDocument.get("address").get("address_name").asText();
+            HttpSession session = request.getSession();
+            session.setAttribute("latitude", latitude);
+            session.setAttribute("longitude", longitude);
+            session.setAttribute("addressName", addressName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+	
+	@RequestMapping("calcul")
 	class DistanceCalculator {
 		static double calculateDistanceInMeters(double lat1, double lon1, double lat2, double lon2) {
 		    double earthRadius = 6371.0; // 지구 반지름 (킬로미터 단위)

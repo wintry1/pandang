@@ -4,24 +4,26 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="com.study.springboot.jdbc.ProductDAO">
-	<select id="listDao" resultType="com.study.springboot.dto.ProductDTO">
-		select * from product order by id desc
-	</select>
-	
-	<select id="viewDao" resultType="com.study.springboot.dto.ProductDTO">
-		select * from product where id = #{0}
-	</select>
-	
 	<insert id="writeDao" parameterType="java.util.HashMap">
-		insert into product (product_seq, user_seq, prd_title, prd_ctnt, prd_at, prd_hit, prd_use, prd_price, prd_latitude, prd_longitude, prd_address, prd_maptext, prd_use_yn)
-			 values (product_seq.nextval, #{item1}, #{item2}, #{item3}, #{item4}, #{item5}, 0, 'E', #{item6}, #{item7}, #{item8}, #{item9}, 'Y')
+		INSERT INTO product (product_seq, user_seq, prd_title, prd_ctnt, prd_at, prd_hit, prd_use, prd_price, prd_latitude, prd_longitude, prd_address, prd_use_yn)
+			VALUES (product_seq.nextval, #{item1}, #{item2}, #{item3}, SYSDATE, 0, 'E', #{item4}, #{item5}, #{item6}, #{item7}, 'Y')
 	</insert>
-	
-	<delete id="deleteDao">
-		delete from product where id = #{_id}
-	</delete>
-	
-	<select id="articleCount" resultType="_int">
-		select count(*) from product
+	<select id="selectDao" resultType="com.study.springboot.jdbc.ProductDTO">
+		SELECT * from product ORDER BY prd_at DESC
 	</select>
+	<select id="selectDao1" resultType="com.study.springboot.jdbc.ProductDTO">
+		SELECT prd_price from product where product_seq = #{product_seq}
+	</select>
+	<select id="selectDao2" resultType="com.study.springboot.jdbc.ProductDTO">
+		SELECT product_seq from product where user_seq = #{user_seq}
+	</select>
+	<select id="searchDao" resultType="com.study.springboot.jdbc.ProductDTO" parameterType="java.lang.String">
+	    SELECT * FROM product
+	    WHERE prd_title LIKE '%'||#{title}||'%'
+	    ORDER BY prd_at DESC
+	</select>
+	<select id="viewProduct" resultType="com.study.springboot.jdbc.ProductDTO">
+        SELECT * FROM product
+		WHERE product_seq = #{productSeq}
+    </select>
 </mapper>

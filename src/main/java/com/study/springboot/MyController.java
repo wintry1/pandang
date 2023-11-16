@@ -1,79 +1,98 @@
 package com.study.springboot;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import com.study.springboot.jdbc.ProductDAO;
-
-import jakarta.servlet.http.HttpServletRequest;
+import com.study.springboot.dao.FilesDAO;
+import com.study.springboot.dao.ProductDAO;
+import com.study.springboot.dto.FilesDTO;
+import com.study.springboot.dto.ProductDTO;
 
 @Controller
 public class MyController {
+	
 	@Autowired
-	ProductDAO dao;
+	ProductDAO productDao;
+	@Autowired
+	FilesDAO filesDao;
 	
 	@RequestMapping("/")
-	public String root() throws Exception{
-		return "content_view";
-	}
-	@GetMapping("/search")
-	public String search(@RequestParam String query) {
-	    String url = "https://dapi.kakao.com/v2/local/search/address.json";
-	    String key = "0e5fcd82ed464324c0e57a10607243a6";
-	    
-	    RestTemplate restTemplate = new RestTemplate();
-	    
-	    HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Authorization", "KakaoAK " + key);
-        
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
-                .queryParam("query", query);
+	public String root(Model model) throws Exception{
 
-        String requestUrl = builder.build().toUriString();
-
-        ResponseEntity<String> response = restTemplate.exchange(requestUrl, HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
-
-        String responseBody = response.getBody();
-        System.out.println(responseBody);
-        
-	    return "responseBody";
-	}
-	@RequestMapping("/write")
-	public String write(HttpServletRequest request, Model model)
-	{
-		String sName = request.getParameter("writer");
-		String sTitle = request.getParameter("title");
-		String sContent =  request.getParameter("content");
-		
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("item1", sName);
-		map.put("item2", sTitle);
-		map.put("item3", sContent);
-		map.put("item4", sName);
-		map.put("item5", sTitle);
-		map.put("item6", sContent);
-		map.put("item7", sName);
-		map.put("item8", sTitle);
-		map.put("item9", sContent);
-		map.put("item10", sContent);
-		map.put("item11", sContent);
-		
-		int nResult = dao.writeDao(map);
-		System.out.println("Write : " + nResult);
-		
 		return "redirect:list";
+	}
+
+	@RequestMapping("/chat_room")
+	public String chat_room(Model model)
+	{
+		return "pop/chat_room";
+	}
+	
+	@RequestMapping("/list")
+	public String plist(Model model)
+	{
+		List<ProductDTO> productList = productDao.selectDao();
+		for (ProductDTO product : productList) {
+		    int productSeq = product.getProduct_seq();
+		    FilesDTO filesDTO = filesDao.viewDao(productSeq);
+		    String imageName = (filesDTO != null) ? filesDTO.getFilesName() : null;
+		    product.setPrd_image(imageName);
+		}
+
+		model.addAttribute("list", productList);
+		
+		return "mainhome";
+	}
+	
+	@RequestMapping("/search")
+	public String psearch(@RequestParam(value = "title", required = false) String title, Model model) {
+        List<ProductDTO> productList = productDao.searchDao(title);
+
+        // 이미지 정보 추가
+        for (ProductDTO product : productList) {
+		    int productSeq = product.getProduct_seq();
+		    FilesDTO filesDTO = filesDao.viewDao(productSeq);
+		    String imageName = (filesDTO != null) ? filesDTO.getFilesName() : null;
+		    product.setPrd_image(imageName);
+		}
+
+        model.addAttribute("list", productList);
+
+        return "product_search";
+    }
+	
+	@RequestMapping("/view")
+    public String pview(@RequestParam("product_seq") int productSeq, Model model) {
+		 
+        // 특정 제품의 상세 정보 조회
+        ProductDTO product = productDao.viewProduct(productSeq);
+
+        // 해당 제품의 이미지 정보 조회
+        FilesDTO filesDTO = filesDao.viewDao(productSeq);
+        String imageName = (filesDTO != null) ? filesDTO.getFilesName() : null;
+        product.setPrd_image(imageName);
+
+        // 모델에 제품 정보 추가
+        model.addAttribute("product", product);
+        
+        return "product_view";
+    }
+	
+	@RequestMapping("/popup/popUp_login")
+	public String popUp_login() {
+		return "popup/popUp_login";
+	}
+	@RequestMapping("/popup/popUp_agree")
+	public String login_agree() {
+		return "popup/popUp_agree";
+	}
+	@RequestMapping("/popup/popUp_map")
+	public String popUp_map() {
+		return "popup/popUp_map";
 	}
 }

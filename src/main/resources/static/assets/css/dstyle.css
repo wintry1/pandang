@@ -1,0 +1,180 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #e0e5ec;
+}
+
+p{
+  margin-top:10px;
+}
+
+h1{
+	color:grey;
+}
+h2{
+	padding-left: 10px;
+	text-align: left;
+	color:grey;
+}
+
+
+.container{
+  width:100%;
+}
+
+.modal-btn-box{
+  width:100%;
+  text-align:center;
+}
+
+.modal-btn-box button{
+  display:inline-block;
+  width:150px;
+  height:50px;
+  background-color:#ffffff;
+  border:1px solid #e1e1e1;
+  padding-top:8px;
+}
+
+.popup-wrap{
+  background-color:rgba(0,0,0,.3);
+  justify-content:center;
+  align-items:center;
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  display:none;
+  padding:15px;
+}
+
+.popup{
+  width:100%;
+  max-width:400px;
+  background-color:#ffffff;
+  border-radius:10px;
+  overflow:hidden;
+  background-color:#FF9800;
+  box-shadow: 5px 10px 10px 1px rgba(0,0,0,.3);
+}
+
+.popup-head{
+  width:100%;
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.head-title {
+	color:#FFFFFF;
+    font-size: 38px;
+    font-style: 'Poppins', sans-serif;
+    font-weight: 700;
+    letter-spacing: -3px;
+    text-align: center;
+}
+.popup-body{
+  width:100%;
+  background-color:#ffffff;
+}
+
+.body-content{
+  width:100%;
+  padding:20px;
+}
+
+.body-titlebox{
+  text-align:center;
+  width:100%;
+  height:300px;
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+.body-contentbox{
+  word-break:break-word;
+  overflow-y:auto;
+  min-height:100px;
+  max-height:200px;
+}
+
+.popup-foot{
+  width:100%;
+  height:60px;
+}
+
+.pop-btn{
+  float:right;
+  margin:16px;
+  color:#ffffff;
+}
+
+.pop-btn.next{
+  border-right:1px solid #3b5fbf;
+}
+
+.frame {
+  width: 90%;
+  margin: 30px auto;
+  text-align: center;
+}
+
+.sendframe {
+  width: 90%;
+  height: 110px;
+  margin: 10px auto;
+  text-align: left;
+  display:flex;
+  flex-direction: column;
+  justify-content:center;
+}
+
+.checkframe {
+  width: 90%;
+  height: 110px;
+  margin: 10px auto;
+  text-align: left;
+  flex-direction: column;
+  justify-content:center;
+}
+
+.check_group {
+  width: 90%;
+  margin: 30px auto;
+  text-align: left;
+}
+
+button {
+  margin: 10px;
+  outline: none;
+}
+
+.custom-btn {
+  width: 250px;
+  height: 50px;
+  padding: 10px 20px;
+  border: 2px solid #9e9e9e;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); 
+  display:none;
+  padding:15px;
+  }
+  
