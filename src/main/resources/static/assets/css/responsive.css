@@ -15,7 +15,11 @@
 
 	.single-ststistics-box h3 {font-size: 18px;}
 	.statistics-content {font-size: 40px;}
-
+	
+	.search-form {
+		width: 370px;
+	}
+	
 }/*max-width:1199px*/
 
 @media screen and (max-width:1024px){
@@ -30,6 +34,7 @@
 	nav.navbar.bootsnav .navbar-collapse.collapse.in {padding-bottom: 30px;}
 	nav.navbar.bootsnav .navbar-brand {padding: 25px;}
 	nav.navbar.bootsnav ul.nav > li > a {padding: 15px 0px;border: transparent;}
+	nav.navbar.bootsnav ul.nav > li > form {margin-left: 50px;}
 	.wrap-sticky nav.navbar.bootsnav.sticked ul.nav > li > a {padding: 15px 0px;}
 }/*max-width:992px*/
 

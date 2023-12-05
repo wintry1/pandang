@@ -30,17 +30,22 @@ $(document).ready(function(){
 	
 		$(function(){
     		$(".product-use").slice(0, 6).show(); // 초기갯수
+    		const hiddenContent = $(".product-use:hidden");
+    
+    		if (hiddenContent.length === 0) {
+        		$("#load").hide(); // 초기에 숨겨진 콘텐츠가 없으면 버튼을 숨깁니다.
+        	}
+        	
     		$("#load").click(function(e){ // 클릭시 more
         		e.preventDefault();
+        		
         		if ($(".product-use:hidden").length > 0) { // 컨텐츠 남아있는지 확인
         			$(".product-use:hidden").slice(0, 6).show();
-        		} else {
-					alert("더이상 존재하지 않습니다."); // 컨텐츠 없을시 alert 창 띄우기 
+        			if ($(".product-use").filter(':hidden').length === 0) {
+          	     		$("#load").hide(); // 더 이상 숨겨진 콘텐츠가 없으면 버튼을 숨깁니다.
+          		  	}
 				}
     		});
-    		
-    		
 		});
-		
 		
 });

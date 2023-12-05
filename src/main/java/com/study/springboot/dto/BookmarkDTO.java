@@ -11,4 +11,5 @@ public class BookmarkDTO {
 	private String prd_title;
 	private int prd_price;
 	private String prd_image;
+	private String prd_use;	
 }

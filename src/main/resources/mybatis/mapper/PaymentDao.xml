@@ -3,9 +3,12 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-<mapper namespace="com.study.springboot.jdbc.PaymentDAO">
-	<insert id="paymentDao" parameterType="java.util.HashMap">
-		INSERT INTO files (payment_seq, buy_seq, sell_seq, product_seq, payment_use, payment_at)
+<mapper namespace="com.study.springboot.dao.PaymentDAO">
+	<insert id="paymentinsert" parameterType="java.util.HashMap">
+		INSERT INTO payment (payment_seq, buy_seq, sell_seq, product_seq, payment_use, payment_at)
 			VALUES (payment_seq.nextval, #{item1}, #{item2}, #{item3}, #{item4}, SYSDATE)
 	</insert>
+	<select id="paymentselect">
+		SELECT payment_seq from product where product_seq = #{product_seq} and buy_seq = #{buy_seq} and sell_seq = #{sell_seq} ORDER BY prd_at DESC
+	</select>
 </mapper>

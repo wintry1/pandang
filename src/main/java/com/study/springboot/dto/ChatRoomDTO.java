@@ -12,4 +12,5 @@ public class ChatRoomDTO {
 	public int getchat_room_seq() {
 		return chat_room_seq;
 	}
+	private String buyer_name;
 }

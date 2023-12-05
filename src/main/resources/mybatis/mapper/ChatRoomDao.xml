@@ -3,12 +3,30 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-<mapper namespace="com.study.springboot.jdbc.ChatRoomDAO">
+<mapper namespace="com.study.springboot.dao.ChatRoomDAO">
 	<insert id="cRinsertDao" parameterType="java.util.HashMap">
 		INSERT INTO chat_room (chat_room_seq, buy_seq, sell_seq, product_seq, chat_room_at)
 			VALUES (chat_room_seq.nextval, #{item1}, #{item2}, #{item3}, SYSDATE)
 	</insert>
-	<select id="buyDao" resultType="com.study.springboot.jdbc.ChatRoomDTO">
+	<select id="selectDao" resultType="com.study.springboot.dto.ChatRoomDTO">
 		SELECT * from chat_room where buy_seq = #{buy_seq} and sell_seq = #{sell_seq} and product_seq = #{product_seq}
+	</select>
+	<select id="selectDao1">
+		SELECT sell_seq from chat_room where chat_room_seq = #{chat_room_seq}
+	</select>
+	<select id="buyDao" resultType="com.study.springboot.dto.ChatRoomDTO">
+		SELECT * from chat_room where buy_seq = #{user_seq}
+	</select>
+	<select id="sellDao" resultType="com.study.springboot.dto.ChatRoomDTO">
+		SELECT * from chat_room where sell_seq = #{user_seq}
+	</select>
+	<select id="getBuyer" resultType="com.study.springboot.dto.ChatRoomDTO">
+		SELECT * from chat_room where product_seq = #{product_seq}
+	</select>	
+	<select id="selectDao2">
+		SELECT product_seq from chat_room where chat_room_seq = #{chat_room_seq}
+	</select>
+	<select id="selectDao3" resultType="com.study.springboot.dto.ChatRoomDTO">
+		SELECT * from chat_room where chat_room_seq = #{chat_room_seq}
 	</select>
 </mapper>

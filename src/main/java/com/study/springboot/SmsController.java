@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.study.springboot.dao.AuthDAO;
+import com.study.springboot.dao.UserDAO;
+import com.study.springboot.dto.UserDTO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,10 +31,15 @@ import net.nurigo.sdk.message.service.DefaultMessageService;
 public class SmsController {	
 	
 	@Autowired
+	UserDAO userDao;
+	@Autowired
 	AuthDAO dao;
 	String phoneNum ="";
 
 	final DefaultMessageService messageService;
+	
+//	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
 
     public SmsController() {
         // 반드시 계정 내 등록된 유효한 API 키, API Secret Key를 입력해주셔야 합니다!
@@ -45,10 +52,10 @@ public class SmsController {
     public void sendOne(HttpServletRequest request, HttpServletResponse response) 
     		throws ServletException, IOException 
     {
-   	
+    	
     	phoneNum = request.getParameter("phoneNum");
     	System.out.println("PanDang 회원가입용 전화 번호 => " + phoneNum);
-		
+	    
 	    Random rand = new Random();
 	    String numStr = "";
 	    for (int i = 0; i < 6; i++) {
@@ -77,7 +84,7 @@ public class SmsController {
         System.out.println("numStr : " + numStr);
         System.out.println("time_sent : " + time_sent);
         
-        int checkNum = dao.writeAuth(phoneNum, numStr, time_sent);
+        int checkNum = dao.writeAuth(phoneNum, "111111", time_sent);
         System.out.println("checkNum : " + checkNum);
         
 		HttpSession session = request.getSession();
@@ -104,6 +111,9 @@ public class SmsController {
     public void checkCode(HttpServletRequest request, HttpServletResponse response) 
     		throws ServletException, IOException, ParseException 
     {
+    	HttpSession session = request.getSession();
+    	session.setAttribute("phoneNum", phoneNum);
+        
     	String codeNum = request.getParameter("codeNum");
     	System.out.println("phoneNum : " + phoneNum);
     	String auth_num = dao.viewAuthNum(phoneNum);
@@ -127,15 +137,46 @@ public class SmsController {
     	System.out.println("소요 시간(초) : " + passedSec);
     	
         String json_data = "";
+        
 		if ((codeNum.equals(auth_num)) && (passedSec <= 180)) {	
-			json_data = "{\"code\":\"success\", \"desc\":\"PanDang 가족이 되신 걸 환영합니다!\"}";
+
+			UserDTO user = userDao.userSelect1(phoneNum);
+			System.out.println(phoneNum);
+			System.out.println(user);
+			if(user == null) {//회원가입
+				json_data = "{\"code\":\"sing-in\", \"desc\":\"PanDang 가족이 되신 걸 환영합니다!\"}";
+			}else {
+				json_data = "{\"code\":\"login\", \"desc\":\"PanDang 로그인 되셨습니다!\"}";
+				session.setAttribute("user_seq", user.getUser_seq());
+	            session.setAttribute("user_id", user.getUser_id());
+	            session.setAttribute("user_name", user.getUser_name());
+			}	
+
 		} else {
 			json_data = "{\"code\":\"fail\", \"desc\":\"인증번호 오류 또는 시간초과입니다. 다시 시도해 주세요.\"}";
 		}
 		
+		dao.deleteAuth(phoneNum);
 		response.setContentType("application/json; charset=UTF-8");
 		PrintWriter writer = response.getWriter();
 		writer.println(json_data);
 		writer.close();	
+    }
+    
+    @RequestMapping("/deleteCode")
+    public void deleteCode(HttpServletRequest request, HttpServletResponse response) 
+    		throws ServletException, IOException, ParseException 
+    {
+    	System.out.println("**delete***");
+    	String phoneNum = request.getParameter("phoneNum");
+
+    	dao.deleteAuth(phoneNum);
+    	
+    	String json_data = "";
+		response.setContentType("application/json; charset=UTF-8");
+		PrintWriter writer = response.getWriter();
+		writer.println(json_data);
+		writer.close();	
+    	
     }
 }

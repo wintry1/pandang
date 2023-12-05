@@ -13,9 +13,14 @@ public interface ProductDAO {
 
 	public int writeDao(Map<String, String> map);
 	public List<ProductDTO> selectDao();
-	public String selectDao1(@Param("product_seq")String product_seq);
-	public String selectDao2(@Param("user_seq")String user_seq);
-	public List<ProductDTO> searchDao(@Param("title")String title);
-    public ProductDTO viewProduct(@Param("productSeq")int productSeq);
+	public ProductDTO selectDao1(@Param("product_seq")int product_seq);
+	public String selectDao2(@Param("user_seq")int user_seq);
+	public List<ProductDTO> selectDao3(@Param("user_seq")int user_seq);
+	public List<ProductDTO> searchPrd1(String search_word1);
+	public List<ProductDTO> searchPrd2(String search_word1, String search_word2);
+	public List<ProductDTO> searchPrd3(String search_word1, String search_word2, String search_word3);
+	public ProductDTO viewProduct(@Param("product_seq")int product_seq);
+	public int updatePrd(String prd_use, int productSeq);
+	public int updatePrd1(@Param("product_seq")int product_seq);
 }
 

@@ -9,5 +9,6 @@ public interface AuthDAO {
 
 	public int writeAuth(String auth_id, String auth_num, String auth_time);
 	public String viewAuthNum(String auth_id);	
-	public String viewAuthTime(String auth_id);	
+	public String viewAuthTime(String auth_id);
+	public int deleteAuth(String auth_id);
 }

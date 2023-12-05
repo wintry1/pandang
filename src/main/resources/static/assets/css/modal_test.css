@@ -1,0 +1,216 @@
+.container_m {
+	width: 100%;
+}
+.modal-btn_box{
+	width: 100%;
+	height: 20%;
+	display:inline-block;
+}
+
+.modal_btn{
+	width: 100px;
+	height: 50px;
+	background-color:#bd00ff;
+}
+.modal-btn_box2{
+	width: 100%;
+	height: 20%;
+	display:inline-block;
+}
+
+.modal_btn2{
+	width: 100px;
+	height: 50px;
+	background-color:yellowgreen;
+}
+.modal_buyer {
+	margin: 20px;
+	width: 300px;
+    height: 400px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    display: none;
+    flex-direction: column;
+}
+
+.modal_top {
+	width: 100%;
+    height: 8%;
+    background-color: #ffdb99;
+}
+.modal_close{
+	width: 30px;
+    height: 30px;
+    float: right;
+    padding: 3px;
+    color: grey;
+}
+.modal_title{
+	width: 100%;
+	height: 30%;
+	background-color: aliceblue;
+}
+.product_title{
+	padding: 10px;
+    width: 90%;
+    height: 70%;
+    font-size: 20px;
+    color: black;
+}
+.product_nickname{
+	padding: 10px;
+    width: 90%;
+    height: 30%;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+.modal_content{
+	width: 100%;
+    height: 60%;
+    background-color: #ffdb99;
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+}
+.buyer_list{
+	margin: 10px;
+    width: 90%;
+    
+    font-size: 20px;
+    border-bottom: 1px solid black;
+    padding: 5px;
+    color: black;
+}
+
+.m-chat-content::-webkit-scrollbar {
+	display: none;
+}
+
+.modal_review{
+	width:400px; 
+	height:600px;
+}
+
+.m-select-review {
+	margin: 0 auto;
+	width: 80%;
+	height:60%;
+	border: 1px solid #b7b7b7;
+	background-color: #ffdb99;
+	position: relative;
+	border-radius: 5px;
+	display: none;
+	flex-direction: column;
+}
+
+.m-review-close-btn {
+	margin: 3px;
+    width: 30px;
+    height: 30px;
+    float: right;
+    color: grey
+}
+
+.m-review-content{
+	padding: 20px;
+    width: 100%;
+    height: 93%;
+    position:relative;
+}
+.m-review_m{
+	width:100%;
+	height: 25%;
+}
+
+.m-review_icon {
+	width:100%;
+	height: 50%;
+	display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.m-review_icon_btn{
+	width: 85px;
+    height: 85px;
+    color: white;
+}
+
+.m-review_text{
+	width: 100%;
+	height: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.m-review_bottom{
+	width: 100%;
+    height: 25%;
+    display: flex;
+    align-items: center;
+}
+.m-review_text {
+	 width:80%;
+	 height:100%;
+}
+
+.m-review_textarea {
+	width: 100%;
+    height: 100%;
+    resize: none;
+}
+
+.m-review_text_btn{
+	padding:1.5px;
+	width: 20%;
+	height:100%;
+	background-color: white;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid;
+}
+
+.m-review_btn{
+	color:black;
+}
+
+.modal-chat{
+	width: 450px;
+	height:800px;
+}
+
+.m-chat-close-btn {
+    position: relative;
+    bottom: 30px;
+    width: 30px;
+    height: 30px;
+    float: right;
+    color: grey
+}
+.m-select-chat{
+	margin: 0 auto;
+	width: 90%;
+	height:90%;
+	border: 1px solid grey;
+	position: relative;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+}
+.m-chat-content{
+    padding: 5px;
+    background-color: #ffd29d;
+    width: 100%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    overflow-y: scroll;
+    color: black;
+}
+.m-review_icon_btn:active{
+    color: orange;
+}

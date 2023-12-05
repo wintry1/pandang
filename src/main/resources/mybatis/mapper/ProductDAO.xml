@@ -3,27 +3,49 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-<mapper namespace="com.study.springboot.jdbc.ProductDAO">
+<mapper namespace="com.study.springboot.dao.ProductDAO">
 	<insert id="writeDao" parameterType="java.util.HashMap">
-		INSERT INTO product (product_seq, user_seq, prd_title, prd_ctnt, prd_at, prd_hit, prd_use, prd_price, prd_latitude, prd_longitude, prd_address, prd_use_yn)
-			VALUES (product_seq.nextval, #{item1}, #{item2}, #{item3}, SYSDATE, 0, 'E', #{item4}, #{item5}, #{item6}, #{item7}, 'Y')
+		insert into product (product_seq, user_seq, prd_title, prd_ctnt, prd_at, prd_hit, prd_use, prd_price, prd_latitude, prd_longitude, prd_address, prd_use_yn)
+			values (product_seq.nextval, #{item1}, #{item2}, #{item3}, sysdate, 0, 'e', #{item4}, #{item5}, #{item6}, #{item7}, 'y')
 	</insert>
-	<select id="selectDao" resultType="com.study.springboot.jdbc.ProductDTO">
-		SELECT * from product ORDER BY prd_at DESC
+	<select id="selectDao" resultType="com.study.springboot.dto.ProductDTO">
+		select * from product order by prd_at desc
 	</select>
-	<select id="selectDao1" resultType="com.study.springboot.jdbc.ProductDTO">
-		SELECT prd_price from product where product_seq = #{product_seq}
+	<select id="selectDao1" resultType="com.study.springboot.dto.ProductDTO">
+		select * from product where product_seq = #{product_seq}
 	</select>
-	<select id="selectDao2" resultType="com.study.springboot.jdbc.ProductDTO">
-		SELECT product_seq from product where user_seq = #{user_seq}
+	<select id="selectDao2">
+		select product_seq from product where user_seq = #{user_seq} order by prd_at desc fetch first 1 row only
 	</select>
-	<select id="searchDao" resultType="com.study.springboot.jdbc.ProductDTO" parameterType="java.lang.String">
-	    SELECT * FROM product
-	    WHERE prd_title LIKE '%'||#{title}||'%'
-	    ORDER BY prd_at DESC
+	<select id="selectDao3">
+		select * from product where user_seq = #{user_seq} order by prd_at desc
 	</select>
-	<select id="viewProduct" resultType="com.study.springboot.jdbc.ProductDTO">
-        SELECT * FROM product
-		WHERE product_seq = #{productSeq}
+	<select id="searchPrd1" resultType="com.study.springboot.dto.ProductDTO">
+	    select * from product 
+	    where prd_title like '%'||#{param1}||'%' 
+	    	or prd_ctnt like '%'||#{param1}||'%' 
+	    	or prd_address like '%'||#{param1}||'%'
+	</select>
+	<select id="searchPrd2" resultType="com.study.springboot.dto.ProductDTO">
+	    select * from product 
+	    where prd_title like '%'||#{param1}||'%' or prd_title like '%'||#{param2}||'%' 
+	    	or prd_ctnt like '%'||#{param1}||'%' or prd_ctnt like '%'||#{param2}||'%' 
+	    	or prd_address like '%'||#{param1}||'%' or prd_address like '%'||#{param2}||'%'
+	</select>
+	<select id="searchPrd3" resultType="com.study.springboot.dto.ProductDTO">
+	    select * from product 
+	    where prd_title like '%'||#{param1}||'%' or prd_title like '%'||#{param2}||'%' or prd_title like '%'||#{param3}||'%' 
+	    	or prd_ctnt like '%'||#{param1}||'%' or prd_ctnt like '%'||#{param2}||'%' or prd_ctnt like '%'||#{param3}||'%'
+	    	or prd_address like '%'||#{param1}||'%' or prd_address like '%'||#{param2}||'%' or prd_address like '%'||#{param3}||'%'
+	</select>
+	<select id="viewProduct" resultType="com.study.springboot.dto.ProductDTO">
+        select * from product
+		where product_seq = #{product_seq}
     </select>
+    <update id="updatePrd">
+        UPDATE product set prd_use = #{param1} WHERE product_seq = #{param2}
+    </update>
+    <update id="updatePrd1">
+        UPDATE product set prd_hit = prd_hit + 1 WHERE product_seq = #{product_seq}
+    </update>
 </mapper>

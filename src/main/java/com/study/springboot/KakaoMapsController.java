@@ -19,11 +19,13 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 public class KakaoMapsController {
 	
-	@RequestMapping("/ch")
-	public ResponseEntity<String> search(@RequestParam Double latitude, @RequestParam Double longitude, HttpServletRequest request) {
-	    String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?";
+	@RequestMapping("/kakaosearch")
+	public ResponseEntity<String> kakaosearch(@RequestParam("latitude") Double latitude, @RequestParam("longitude") Double longitude, HttpServletRequest request) {
+		Integer user_seq = (Integer) request.getSession().getAttribute("user_seq");
+		HttpSession session = request.getSession();
+		
+		String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?";
 	    String key = "0e5fcd82ed464324c0e57a10607243a6";
-	    
 	    RestTemplate restTemplate = new RestTemplate();
 	    
 	    HttpHeaders httpHeaders = new HttpHeaders();
@@ -42,17 +44,24 @@ public class KakaoMapsController {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JsonNode jsonNode = objectMapper.readTree(responseBody);
+            JsonNode documents = jsonNode.get("documents");
+            JsonNode firstDocument = documents.get(0);
+            JsonNode address = firstDocument.get("address");
+            
+            String addressName = null;
+            
+            if (user_seq == null) {
+            	String region_1 = address.get("region_1depth_name").asText() + " ";
+                String region_2 = address.get("region_2depth_name").asText() + " ";
+                String region_3 = address.get("region_3depth_name").asText();
+                addressName = region_1 + region_2 + region_3;
+    	    } else { addressName = address.get("address_name").asText(); }
 
-            JsonNode firstDocument = jsonNode.get("documents").get(0);
-
-            String addressName = firstDocument.has("road_address") ?
-                firstDocument.get("road_address").get("address_name").asText() :
-                firstDocument.get("address").get("address_name").asText();
-            HttpSession session = request.getSession();
+            System.out.println(addressName);
+            
             session.setAttribute("latitude", latitude);
             session.setAttribute("longitude", longitude);
             session.setAttribute("addressName", addressName);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,7 +72,7 @@ public class KakaoMapsController {
 	@RequestMapping("calcul")
 	class DistanceCalculator {
 		static double calculateDistanceInMeters(double lat1, double lon1, double lat2, double lon2) {
-		    double earthRadius = 6371.0; // 지구 반지름 (킬로미터 단위)
+		    double earthRadius = 6371.0;
 	
 		    // 라디안으로 변환
 		    double radiansLat1 = Math.toRadians(lat1);

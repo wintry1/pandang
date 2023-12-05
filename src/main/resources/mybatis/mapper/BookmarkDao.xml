@@ -3,8 +3,21 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-<mapper namespace="com.study.springboot.jdbc.BookmarkDAO">
-	<select id="selectDao" resultType="com.study.springboot.jdbc.BookmarkDTO">
-		SELECT * from bookmark WHERE user_seq = #{0} AND product_seq = #{1}
+<mapper namespace="com.study.springboot.dao.BookmarkDAO">
+	<select id="selectDao" resultType="com.study.springboot.dto.BookmarkDTO">
+		SELECT * from bookmark WHERE user_seq = #{user_seq} and product_seq = #{product_seq}
 	</select>
+	
+	<select id="countDao">
+		SELECT count(*) from bookmark WHERE product_seq = #{product_seq}
+	</select>
+	
+	<insert id="insertDao">
+		insert into bookmark (bookmark_seq, user_seq, product_seq, bookmark_at)
+			values (bookmark_seq.nextval, #{user_seq}, #{product_seq}, sysdate)
+	</insert>
+	
+	<delete id="deleteDao">
+		delete from bookmark where user_seq = #{user_seq} and product_seq = #{product_seq}
+	</delete>
 </mapper>

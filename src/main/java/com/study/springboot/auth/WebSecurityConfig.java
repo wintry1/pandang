@@ -31,7 +31,7 @@ public class WebSecurityConfig {
 					.requestMatchers("/popup/**").permitAll()
 					.requestMatchers("/main2").permitAll()
 					.requestMatchers("/verifySMS").permitAll()
-					.requestMatchers("/admin/**").hasRole("ADMIN")
+					.requestMatchers("/admin/**").permitAll()
 					.requestMatchers("/**").permitAll()
 					.anyRequest().authenticated()	//어떠한 요청이로도 인증 필요
 				);
@@ -63,6 +63,9 @@ public class WebSecurityConfig {
 				.userInfoEndpoint(endPoint -> endPoint
 						.userService(customOAuth2UserService)
 				)
+				.successHandler((request, response, authentication) -> {
+			     response.sendRedirect("/userInsert"); // 이동할 URL 지정
+			   })
 			);
 		
 		return http.build();

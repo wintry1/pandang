@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.study.springboot.dao.NoticeDAO">
+	<insert id="noticeInsertChat" parameterType="java.util.HashMap">
+		INSERT INTO notice (notice_seq, user_seq, chat_room_seq, notice_use_yn, notice_read_or_not, notice_at)
+			VALUES (notice_seq.nextval, #{item1}, #{item2}, 'Y', 'N', SYSDATE)
+	</insert>
+	<select id="noticeviewDao" resultType="com.study.springboot.dto.NoticeDTO">
+        SELECT DISTINCT chat_room_seq, user_seq, notice_use_yn FROM notice WHERE user_seq = #{user_seq} AND notice_use_yn = 'Y'
+	</select>
+	<select id="noticeviewDao1" resultType="com.study.springboot.dto.NoticeDTO">
+        SELECT product_seq FROM notice WHERE user_seq = #{user_seq} AND notice_use_yn = 'Y'
+	</select>
+	<select id="noticeviewDao2" resultType="com.study.springboot.dto.NoticeDTO">
+        SELECT * FROM notice WHERE notice_seq = #{notice_seq}
+	</select>
+	<select id="noticeviewDao3" resultType="com.study.springboot.dto.NoticeDTO">
+        SELECT * FROM notice WHERE product_seq = #{product_seq} AND notice_use_yn = 'Y'
+	</select>
+	<update id="noticeupdateDao">
+		update notice set notice_read_or_not = 'Y' where user_seq = #{user_seq} and chat_room_seq = #{chat_room_seq}
+	</update>
+	<delete id="noticeDelete">
+		DELETE from notice where notice_seq = #{notice_seq}
+	</delete>
+	<delete id="noticeDeleteDao">
+		DELETE from notice where notice_seq = #{product_seq}
+	</delete>
+	<insert id="noticeInsert" parameterType="java.util.HashMap">
+		INSERT INTO notice (notice_seq, user_seq, product_seq, notice_use_yn, notice_read_or_not, notice_at)
+			VALUES (notice_seq.nextval, #{item1}, #{item2},'Y', 'N', SYSDATE)
+	</insert>
+</mapper>

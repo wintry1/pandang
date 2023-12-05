@@ -3,21 +3,21 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-<mapper namespace="com.study.springboot.jdbc.ProfileDAO">
+<mapper namespace="com.study.springboot.dao.ProfileDAO">
 
-	<select id="listSproduct" resultType="com.study.springboot.jdbc.ProductDTO">
-		select * from product where prd_use = 'E' AND user_seq = #{param1}
+	<select id="listSproduct" resultType="com.study.springboot.dto.ProductDTO">
+		select * from product where user_seq = #{param1}
 	</select>	
 
-	<select id="showReview" resultType="com.study.springboot.jdbc.ReviewDTO">
+	<select id="showReview" resultType="com.study.springboot.dto.ReviewDTO">
 		select * from review where product_seq = #{param1} order by review_seq desc
 	</select>
 
-	<select id="listBookmark" resultType="com.study.springboot.jdbc.BookmarkDTO">
+	<select id="listBookmark" resultType="com.study.springboot.dto.BookmarkDTO">
 		select * from bookmark where user_seq = #{param1}
 	</select>
 	
-	<select id="listMyproduct" resultType="com.study.springboot.jdbc.ProductDTO">
+	<select id="listMyproduct" resultType="com.study.springboot.dto.ProductDTO">
 		select * from product where user_seq = #{param1}
 	</select>	
 	
@@ -29,7 +29,7 @@
 		select user_address from users where user_seq = #{param1}
 	</select>	
 
-	<select id="listBMproduct" resultType="com.study.springboot.jdbc.ProductDTO">
+	<select id="listBMproduct" resultType="com.study.springboot.dto.ProductDTO">
 		select * from product where product_seq = #{param1}
 	</select>	
 

@@ -3,15 +3,25 @@ package com.study.springboot;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.study.springboot.dao.AdminDAO;
+import com.study.springboot.dao.BookmarkDAO;
 import com.study.springboot.dao.FilesDAO;
 import com.study.springboot.dao.ProductDAO;
+import com.study.springboot.dao.UserDAO;
+import com.study.springboot.dto.BookmarkDTO;
 import com.study.springboot.dto.FilesDTO;
 import com.study.springboot.dto.ProductDTO;
+import com.study.springboot.dto.UserDTO;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MyController {
@@ -20,79 +30,63 @@ public class MyController {
 	ProductDAO productDao;
 	@Autowired
 	FilesDAO filesDao;
+	@Autowired
+	BookmarkDAO bookmarkDao;
+	@Autowired
+	UserDAO userDao;
 	
 	@RequestMapping("/")
 	public String root(Model model) throws Exception{
 
 		return "redirect:list";
 	}
-
-	@RequestMapping("/chat_room")
-	public String chat_room(Model model)
-	{
-		return "pop/chat_room";
-	}
 	
-	@RequestMapping("/list")
-	public String plist(Model model)
-	{
-		List<ProductDTO> productList = productDao.selectDao();
-		for (ProductDTO product : productList) {
-		    int productSeq = product.getProduct_seq();
-		    FilesDTO filesDTO = filesDao.viewDao(productSeq);
-		    String imageName = (filesDTO != null) ? filesDTO.getFilesName() : null;
-		    product.setPrd_image(imageName);
-		}
-
-		model.addAttribute("list", productList);
+	
+	
+	@ResponseBody
+	@RequestMapping("/bookmark")
+    public ResponseEntity<String> pbookmark(@RequestParam int product_seq, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		int user_seq = (int)session.getAttribute("user_seq");
 		
-		return "mainhome";
-	}
-	
-	@RequestMapping("/search")
-	public String psearch(@RequestParam(value = "title", required = false) String title, Model model) {
-        List<ProductDTO> productList = productDao.searchDao(title);
-
-        // 이미지 정보 추가
-        for (ProductDTO product : productList) {
-		    int productSeq = product.getProduct_seq();
-		    FilesDTO filesDTO = filesDao.viewDao(productSeq);
-		    String imageName = (filesDTO != null) ? filesDTO.getFilesName() : null;
-		    product.setPrd_image(imageName);
-		}
-
-        model.addAttribute("list", productList);
-
-        return "product_search";
+        BookmarkDTO bookmark = bookmarkDao.selectDao(user_seq, product_seq);
+        System.out.println(bookmark);
+        if (bookmark != null) {
+        	bookmarkDao.deleteDao(user_seq, product_seq); // 북마크가 있으면 삭제
+        	return ResponseEntity.ok("dislike");
+        } else {
+        	bookmarkDao.insertDao(user_seq, product_seq); // 북마크가 없으면 추가
+        	return ResponseEntity.ok("북마크 토글 성공");
+        }
     }
 	
-	@RequestMapping("/view")
-    public String pview(@RequestParam("product_seq") int productSeq, Model model) {
-		 
-        // 특정 제품의 상세 정보 조회
-        ProductDTO product = productDao.viewProduct(productSeq);
-
-        // 해당 제품의 이미지 정보 조회
-        FilesDTO filesDTO = filesDao.viewDao(productSeq);
-        String imageName = (filesDTO != null) ? filesDTO.getFilesName() : null;
-        product.setPrd_image(imageName);
-
-        // 모델에 제품 정보 추가
-        model.addAttribute("product", product);
-        
-        return "product_view";
-    }
+	@RequestMapping("/modifyProfile")
+	public String modifyProfile() {
+		
+		return "modifyProfile";
+	}
 	
-	@RequestMapping("/popup/popUp_login")
-	public String popUp_login() {
-		return "popup/popUp_login";
+	@RequestMapping("/message")
+	public String message() {
+		
+		return "message";
 	}
-	@RequestMapping("/popup/popUp_agree")
-	public String login_agree() {
-		return "popup/popUp_agree";
+	
+	@RequestMapping("/alarm_list")
+	public String alarm_list() {
+		
+		return "alarm_list";
 	}
-	@RequestMapping("/popup/popUp_map")
-	public String popUp_map() {
-		return "popup/popUp_map";
+	@RequestMapping("/test_chat")
+	public String test_chat() {
+		
+		return "test_chat";
 	}
+	
+	@RequestMapping("/test_review")
+	public String test_review() {
+		
+		return "test_review";
+	}
+
 }

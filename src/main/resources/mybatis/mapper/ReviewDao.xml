@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.study.springboot.dao.ReviewDAO">
+
+	<select id="reviewList" resultType="com.study.springboot.dto.ReviewDTO">
+		select * from review where user_seq = #{param1} order by review_at desc
+	</select>
+	
+	<select id="productReview" resultType="com.study.springboot.dto.ReviewDTO">
+        select * from review where user_seq = #{param1} and product_seq = #{param2}
+    </select>
+
+	<insert id="reviewInsert"> 
+		insert into review (review_seq, product_seq, user_seq, review_ctnt, review_at) 
+			values (review_seq.nextval, #{param1}, #{param2}, #{param3}, sysdate) 
+	</insert>	
+
+</mapper>

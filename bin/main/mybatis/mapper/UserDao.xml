@@ -3,50 +3,58 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-<mapper namespace="com.study.springboot.jdbc.UserDAO">
-	<select id="getEmployee" resultType="com.study.springboot.jdbc.UserDTO">
-		SELECT * from files where user_seq = #{0}
+<mapper namespace="com.study.springboot.dao.UserDAO">
+	<select id="viewUser" resultType="com.study.springboot.dto.UserDTO">
+		SELECT * from users where user_seq = #{param1}
 	</select>
 	
-	<select id="userList" resultType="com.study.springboot.jdbc.UserDTO">
+	<select id="userList" resultType="com.study.springboot.dto.UserDTO">
 		select * from users order by user_id desc
 	</select>
 	
-	<select id="userView" resultType="com.study.springboot.jdbc.UserDTO">
+	<select id="userView" resultType="com.study.springboot.dto.UserDTO">
 		select * from users where user_id = #{param1}
 	</select>
 	
 	<insert id="userInsert">
-		insert into users (user_seq, user_id, user_name, user_role, user_created_at, user_warning_count, user_criminal_count, user_address, user_latitude, user_longitude, user_sns, user_grade)
-			values (user_seq.nextval, #{param1}, #{param2}, 'USER', sysdate,0,0,#{param3},#{param4},#{param5}, #{param6}, 36.5)
+		insert into users (user_seq, user_id, user_name, user_type, user_created_at, user_warning_count, user_criminal_count, user_address, user_latitude, user_longitude, user_sns, user_grade)
+			values (user_seq.nextval, #{param1}, #{param2}, 'user', sysdate,0,0,#{param3},#{param4},#{param5}, #{param6}, 36.5)
 	</insert>
 	
-	<select id="userUpdate" resultType="com.study.springboot.jdbc.UserDTO">
-		update users set where user_name=? and  user_update_dt = sysdate
-	</select>
+	<update id="locationUpdate">
+		update users set user_address = #{param2}, user_latitude = #{param3}, user_longitude = #{param4} where user_id = #{param1}
+	</update>
 	
 	<delete id="userDelete">
 		delete from users where id = #{param1}
 	</delete>
 	
-	<select id="userSelect" resultType="com.study.springboot.jdbc.UserDTO">
-		select * from users by user_id = #{param1}
+	<select id="userSelect" resultType="com.study.springboot.dto.UserDTO">
+		select * from users where user_id = #{user_name}
 	</select>
 	
-	<insert id="joinUser" parameterType="java.util.HashMap">
-		INSERT INTO users (user_seq, user_id, user_name, user_type, user_created_at, user_updated_at, user_address, user_latitude, user_longitude, user_sns)
-			VALUES (users_seq.nextval, #{item1}, #{item2}, 'user', sysdate, sysdate, #{param3}, #{param4}, #{param5}, #{param6})
-	</insert>
+	<select id="userSelect1" resultType="com.study.springboot.dto.UserDTO">
+		select * from users where user_id = #{user_name}
+	</select>
+	
+	<select id="userUpdate" resultType="com.study.springboot.dto.UserDTO">
+		update users set where user_name=? and user_update_dt = sysdate
+	</select>
 	
 	<update id="updateUser">
 		update users set user_name = #{param1} where user_seq = #{param2}
 	</update>
 		
 	<delete id="deleteUser">
-		delete from users where user_seq = #{param1}
+		delete from users where user_seq = #{user_seq}
 	</delete>
 	
-	<select id="viewUser" resultType="com.study.springboot.jdbc.UserDTO">
-		SELECT * from users where user_seq = #{param1}
+	<select id="username">
+		select user_name from users where user_seq = #{user_seq}
 	</select>
+	
+	<update id="updateUserScore">
+		update users set user_grade = user_grade + #{score} where user_seq = #{user_seq} 
+	</update>
+	
 </mapper>

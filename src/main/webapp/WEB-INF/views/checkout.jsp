@@ -13,7 +13,6 @@
 </head>
 <%
 	String user_name = (String) request.getSession().getAttribute("user_name");
-	String prd_title = (String) request.getSession().getAttribute("prd_title");
 %>
 <body>
     <!-- 주문서 영역 -->
@@ -24,10 +23,6 @@
         <div id="payment-method"></div>
         <!-- 이용약관 UI -->
         <div id="agreement"></div>
-        <!-- 쿠폰 체크박스 -->
-        <div style="padding-left: 25px">
-          <div class="checkable typography--p"><label for="coupon-box" class="checkable__label typography--regular"><input id="coupon-box" class="checkable__input" type="checkbox" aria-checked="true"></label></div>
-        </div>
         <!-- 결제하기 버튼 -->
         <div class="result wrapper">
           <button class="button" id="payment-button"
@@ -42,7 +37,7 @@
     const coupon = document.getElementById("coupon-box");
     const generateRandomString = () => window.btoa(Math.random()).slice(0, 20);
     let currentURL = window.location.protocol + "//" + window.location.host + "/" + window.location.pathname.split('/')[1];
-    var amount = ${prd_price.prd_price};
+    var amount = ${list.prd_price};
 
     const clientKey = "test_ck_kYG57Eba3G67q2LddLpw8pWDOxmA"; 
     const customerKey = generateRandomString();                 
@@ -63,13 +58,13 @@
     button.addEventListener("click", function () {
       paymentWidget.requestPayment({
         orderId: generateRandomString(),
-        orderName: <%= prd_title %>,
+        orderName: '${list.prd_title}',
         successUrl: 'http://localhost:8081/success',
         failUrl: 'http://localhost:8081/fail',
-        customerName: <%= user_name %>,
+        customerName: '<%= user_name %>',
       });
     });
-
+    
   </script>
 </body>
 </html>
